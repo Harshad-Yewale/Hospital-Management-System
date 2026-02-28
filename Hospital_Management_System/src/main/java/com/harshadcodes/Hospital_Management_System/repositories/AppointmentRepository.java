@@ -1,5 +1,6 @@
 package com.harshadcodes.Hospital_Management_System.repositories;
 
+import com.harshadcodes.Hospital_Management_System.constants.AppointmentStatus;
 import com.harshadcodes.Hospital_Management_System.entities.Appointment;
 import com.harshadcodes.Hospital_Management_System.entities.Doctor;
 import jakarta.validation.constraints.NotNull;
@@ -16,4 +17,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
     List<Appointment> findByPatientId(long patientId);
 
     boolean existsByDoctorAndAppointmentTimeAndIdNot(Doctor doctor, @NotNull LocalDateTime appointmentTime,Long id);
+
+    boolean existsByPatientIdAndStatus(Long id, AppointmentStatus appointmentStatus);
 }

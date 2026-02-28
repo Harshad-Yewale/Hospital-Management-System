@@ -68,4 +68,17 @@ public class MyGlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> myResourceAlreadyExistException (ResourceAlreadyExistException ex,HttpServletRequest request){
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.CONFLICT.value(),
+                        "Already Exists",
+                        ex.getMessage(),
+                        request.getRequestURI()
+                ));
+    }
+
 }

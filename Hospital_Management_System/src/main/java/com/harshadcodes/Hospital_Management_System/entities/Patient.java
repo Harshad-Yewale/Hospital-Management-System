@@ -1,6 +1,8 @@
 package com.harshadcodes.Hospital_Management_System.entities;
 
 
+import com.harshadcodes.Hospital_Management_System.constants.BloodGroup;
+import com.harshadcodes.Hospital_Management_System.constants.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +19,6 @@ import java.util.List;
 @Entity
 @Table(name = "patients")
 @NoArgsConstructor
-@ToString(exclude = "appointments")
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -38,15 +39,17 @@ public class Patient {
     @NotBlank
     private String email;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false,length = 10)
-    private String gender;
+    private Gender gender;
 
     @ToString.Exclude
     @Column(nullable = false)
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false,length = 5)
-    private String bloodGroup;
+    private BloodGroup bloodGroup;
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -63,10 +66,11 @@ public class Patient {
             mappedBy = "patient",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @ToString.Exclude
     private List<Appointment> appointments=new ArrayList<>();
 
 
-    public Patient(String patientName, String email, String gender, LocalDate birthDate, String bloodGroup) {
+    public Patient(String patientName, String email, Gender gender, LocalDate birthDate, BloodGroup bloodGroup) {
         this.patientName = patientName;
         this.email = email;
         this.gender = gender;
