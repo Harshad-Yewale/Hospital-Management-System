@@ -42,6 +42,13 @@ public class AppointmentController {
             return appointmentService.updateAppointment(id, request);
         }
 
+        @GetMapping("/doctor/{doctorId}")
+        public List<AppointmentResponse> getByDoctor(
+                @PathVariable Long doctorId) {
+
+            return appointmentService.getAppointmentsByDoctor(doctorId);
+        }
+
         @PatchMapping("/{id}/cancel")
         public AppointmentResponse cancel(@PathVariable long id) {
             return appointmentService.deleteAppointment(id);

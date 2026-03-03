@@ -2,6 +2,7 @@ package com.harshadcodes.Hospital_Management_System.services;
 
 import com.harshadcodes.Hospital_Management_System.payload.DepartmentCreateRequest;
 import com.harshadcodes.Hospital_Management_System.payload.DepartmentResponse;
+import com.harshadcodes.Hospital_Management_System.payload.DoctorResponse;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -30,6 +31,10 @@ public interface DepartmentService {
     // ASSIGN DOCTOR
     @Transactional
     void assignDoctorToDepartment(Long departmentId, Long doctorId);
+
+
+    @Transactional
+    List<DoctorResponse> getDoctorsByDepartment(Long departmentId);
 
     // REMOVE DOCTOR
     @Transactional

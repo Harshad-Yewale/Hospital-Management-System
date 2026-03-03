@@ -3,6 +3,7 @@ package com.harshadcodes.Hospital_Management_System.services;
 
 import com.harshadcodes.Hospital_Management_System.payload.AppointmentRequest;
 import com.harshadcodes.Hospital_Management_System.payload.AppointmentResponse;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,6 @@ public interface AppointmentService {
 
     AppointmentResponse completeAppointment(long appointment_id);
 
-
-
+    @Transactional
+    List<AppointmentResponse> getAppointmentsByDoctor(Long doctorId);
 }

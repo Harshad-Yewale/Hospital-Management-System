@@ -6,6 +6,7 @@ import com.harshadcodes.Hospital_Management_System.entities.Department;
 import com.harshadcodes.Hospital_Management_System.entities.Doctor;
 import com.harshadcodes.Hospital_Management_System.payload.DepartmentCreateRequest;
 import com.harshadcodes.Hospital_Management_System.payload.DepartmentResponse;
+import com.harshadcodes.Hospital_Management_System.payload.DoctorResponse;
 import com.harshadcodes.Hospital_Management_System.repositories.DepartmentRepository;
 import com.harshadcodes.Hospital_Management_System.repositories.DoctorRepository;
 import jakarta.transaction.Transactional;
@@ -114,6 +115,26 @@ public class DepartmentServiceImpl implements DepartmentService {
         doctor.getDepartments().add(department);  // owning side
     }
 
+
+
+    @Transactional
+    @Override
+    public List<DoctorResponse> getDoctorsByDepartment(Long departmentId) {
+
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Department not found with id: " + departmentId)
+                );
+
+        return department.getDoctors()
+                .stream()
+                .map(this::mapDepartmentToResponse)
+                .toList();
+    }
+
+
+
+
     // REMOVE DOCTOR
     @Transactional
     @Override
@@ -140,6 +161,18 @@ public class DepartmentServiceImpl implements DepartmentService {
                 department.getDepartmentName(),
                 department.getCreatedAt(),
                 doctorIds
+        );
+    }
+
+    private DoctorResponse mapDepartmentToResponse(Doctor doctor) {
+        return new DoctorResponse(
+                doctor.getId(),
+                doctor.getDoctorName(),
+                doctor.getEmail(),
+                doctor.getSpecialization(),
+                doctor.getSalary(),
+                doctor.getCreatedAt(),
+                doctor.getUpdatedAt()
         );
     }
 }

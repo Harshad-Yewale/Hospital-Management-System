@@ -1,7 +1,9 @@
 package com.harshadcodes.Hospital_Management_System.controllers;
 
+
 import com.harshadcodes.Hospital_Management_System.payload.DoctorCreateRequest;
 import com.harshadcodes.Hospital_Management_System.payload.DoctorResponse;
+import com.harshadcodes.Hospital_Management_System.services.DepartmentService;
 import com.harshadcodes.Hospital_Management_System.services.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 public class DoctorController {
 
     private final DoctorService doctorService;
+    private final DepartmentService departmentService;
 
     // CREATE
     @PostMapping
@@ -56,6 +59,13 @@ public class DoctorController {
                 doctorService.updateDoctor(id, request)
         );
     }
+
+    @GetMapping("/{id}/doctors")
+    public List<DoctorResponse> getDoctors(@PathVariable Long id) {
+        return departmentService.getDoctorsByDepartment(id);
+    }
+
+
 
     // DELETE WITH REASSIGNMENT
     @DeleteMapping("/{id}")

@@ -39,6 +39,19 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getAllPatients());
     }
 
+    @PatchMapping("/{id}/insurance/{insuranceId}")
+    public PatientResponse assignInsurance(
+            @PathVariable Long id,
+            @PathVariable Long insuranceId) {
+
+        return patientService.assignInsurance(id, insuranceId);
+    }
+
+    @PatchMapping("/{id}/insurance/remove")
+    public PatientResponse removeInsurance(@PathVariable Long id) {
+        return patientService.removeInsurance(id);
+    }
+
     // UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<PatientResponse> updatePatient(@PathVariable Long id,

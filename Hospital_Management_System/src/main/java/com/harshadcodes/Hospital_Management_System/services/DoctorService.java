@@ -1,5 +1,7 @@
 package com.harshadcodes.Hospital_Management_System.services;
 
+import com.harshadcodes.Hospital_Management_System.payload.AppointmentResponse;
+import com.harshadcodes.Hospital_Management_System.payload.DepartmentResponse;
 import com.harshadcodes.Hospital_Management_System.payload.DoctorCreateRequest;
 import com.harshadcodes.Hospital_Management_System.payload.DoctorResponse;
 import jakarta.transaction.Transactional;
@@ -14,6 +16,9 @@ public interface DoctorService {
     // GET BY ID
     @Transactional
     DoctorResponse getDoctorById(Long id);
+
+    @Transactional
+    List<DepartmentResponse> getDepartmentsByDoctor(Long doctorId);
 
     // GET ALL
     @Transactional

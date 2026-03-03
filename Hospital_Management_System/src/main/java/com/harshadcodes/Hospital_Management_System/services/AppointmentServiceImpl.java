@@ -120,6 +120,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
 
+    @Transactional
+    @Override
+    public List<AppointmentResponse> getAppointmentsByDoctor(Long doctorId) {
+
+        if (!doctorRepository.existsById(doctorId)) {
+            throw new ResourceNotFoundException("Doctor not found");
+        }
+
+        return appointmentRepository.findByDoctorId(doctorId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
     //to map appointment to response
     private AppointmentResponse mapToResponse(Appointment appointment) {
         return new AppointmentResponse(

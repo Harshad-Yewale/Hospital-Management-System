@@ -22,4 +22,10 @@ public interface PatientService {
 
     @Transactional
     void deletePatient(Long id);
+
+    @Transactional
+    PatientResponse assignInsurance(Long patientId, Long insuranceId);
+
+    @Transactional
+    PatientResponse removeInsurance(Long patientId);
 }

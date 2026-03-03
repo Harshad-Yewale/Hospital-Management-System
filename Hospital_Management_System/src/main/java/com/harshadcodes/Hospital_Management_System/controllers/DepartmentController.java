@@ -3,6 +3,7 @@ package com.harshadcodes.Hospital_Management_System.controllers;
 import com.harshadcodes.Hospital_Management_System.payload.DepartmentCreateRequest;
 import com.harshadcodes.Hospital_Management_System.payload.DepartmentResponse;
 import com.harshadcodes.Hospital_Management_System.services.DepartmentService;
+import com.harshadcodes.Hospital_Management_System.services.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 public class DepartmentController {
 
     private final DepartmentService departmentService;
+    private final DoctorService doctorService;
 
     @PostMapping
     public ResponseEntity<DepartmentResponse> create(
@@ -34,6 +36,11 @@ public class DepartmentController {
     @GetMapping
     public ResponseEntity<List<DepartmentResponse>> getAll() {
         return ResponseEntity.ok(departmentService.getAllDepartments());
+    }
+
+    @GetMapping("/{id}/departments")
+    public List<DepartmentResponse> getDepartments(@PathVariable Long id) {
+        return doctorService.getDepartmentsByDoctor(id);
     }
 
     @PutMapping("/{id}")
@@ -67,4 +74,6 @@ public class DepartmentController {
         departmentService.removeDoctorFromDepartment(departmentId, doctorId);
         return ResponseEntity.ok().build();
     }
+
+
 }

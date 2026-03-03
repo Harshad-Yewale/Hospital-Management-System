@@ -3,10 +3,14 @@ package com.harshadcodes.Hospital_Management_System.services;
 import com.harshadcodes.Hospital_Management_System.Exceptions.ResourceAlreadyExistException;
 import com.harshadcodes.Hospital_Management_System.Exceptions.ResourceNotFoundException;
 import com.harshadcodes.Hospital_Management_System.entities.Appointment;
+import com.harshadcodes.Hospital_Management_System.entities.Department;
 import com.harshadcodes.Hospital_Management_System.entities.Doctor;
+import com.harshadcodes.Hospital_Management_System.payload.AppointmentResponse;
+import com.harshadcodes.Hospital_Management_System.payload.DepartmentResponse;
 import com.harshadcodes.Hospital_Management_System.payload.DoctorCreateRequest;
 import com.harshadcodes.Hospital_Management_System.payload.DoctorResponse;
 import com.harshadcodes.Hospital_Management_System.repositories.AppointmentRepository;
+import com.harshadcodes.Hospital_Management_System.repositories.DepartmentRepository;
 import com.harshadcodes.Hospital_Management_System.repositories.DoctorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final AppointmentRepository appointmentRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Transactional
     @Override
@@ -51,7 +56,20 @@ public class DoctorServiceImpl implements DoctorService {
         return mapToResponse(doctor);
     }
 
+    @Transactional
+    @Override
+    public List<DepartmentResponse> getDepartmentsByDoctor(Long doctorId) {
 
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Doctor not found with id: " + doctorId)
+                );
+
+        return doctor.getDepartments()
+                .stream()
+                .map(this::mapDepartmentToResponse)
+                .toList();
+    }
     @Transactional
     @Override
     public List<DoctorResponse> getAllDoctors() {
@@ -79,6 +97,7 @@ public class DoctorServiceImpl implements DoctorService {
 
         return mapToResponse(doctor);
     }
+
 
 
     @Transactional
@@ -116,6 +135,31 @@ public class DoctorServiceImpl implements DoctorService {
                 doctor.getSalary(),
                 doctor.getCreatedAt(),
                 doctor.getUpdatedAt()
+        );
+    }
+
+    private DepartmentResponse mapDepartmentToResponse(Department department) {
+
+        List<Long> doctorIds = department.getDoctors()
+                .stream()
+                .map(Doctor::getId)
+                .toList();
+
+        return new DepartmentResponse(
+                department.getId(),
+                department.getDepartmentName(),
+                department.getCreatedAt(),
+                doctorIds
+        );
+    }
+
+    private AppointmentResponse mapAppointmentToResponse(Appointment appointment) {
+        return new AppointmentResponse(
+                appointment.getId(),
+                appointment.getPatient().getPatientName(),
+                appointment.getDoctor().getDoctorName(),
+                appointment.getAppointmentTime(),
+                appointment.getStatus().name()
         );
     }
 }
