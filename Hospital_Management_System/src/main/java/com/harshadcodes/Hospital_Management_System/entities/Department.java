@@ -10,6 +10,7 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,9 +34,8 @@ public class Department {
 
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
-
-    private List<Doctor> doctors;
+    @ManyToMany(mappedBy = "departments", fetch = FetchType.LAZY)
+    private List<Doctor> doctors=new ArrayList<>();
 
     public Department(String departmentName) {
         this.departmentName = departmentName;
